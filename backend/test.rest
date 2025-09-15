@@ -1,5 +1,5 @@
 
-POST http://localhost:4000/criarconta
+POST http://localhost:4000/login
 Content-Type: application/json
 
 {   
