@@ -2,13 +2,21 @@ import express from "express";
 import pool from "./db.js";
 import { createaccount } from "./controlers/createaccount.js";
 import jwt from 'jsonwebtoken'
+import { login } from "./controlers/login.js";
+import cors from 'cors'
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin : "http://localhost:3000",
+  methods : ["GET","POST"],
+}))
 
 // Rota Principal
-app.get("/", (req, res) => {
-  res.status(200).send("Rodando");
+
+app.get("/", async(req, res) => {
+  let users =  await pool.query("SELECT username ,id FROM usuarios")
+  res.status(200).send(users.rows.map((u)=> `<li>${u.id}</li>`).join(""));
 });
 
 // Rota de criação da conta
@@ -19,17 +27,9 @@ app.get("/criarconta", (req, res) => {
 app.post("/criarconta", createaccount);
 
 // Rota de Login
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  console.log(email);
-  
-    const consultation = await pool.query(
-      "SELECT * FROM usuarios WHERE email = $1 AND password = $2",
-      [email, password],
-    );
-    if (consultation.rowCount > 0) res.sendStatus(200)
-    res.sendStatus(400)
-});
+
+app.post("/login", login);
+
 app.get("/login", (req, res) => {
   res.status(200).send("login");
 });
@@ -44,5 +44,20 @@ app.get("/confirmemail" , async (req ,res)=>{
 
 
 })
+
+// CHAT
+let menssagem = []
+
+app.post("/chat/:id" , (req ,res)=>{
+   const {mesage} = req.body
+   res.send(mesage)
+})
+app.get("/chat/:id" , (req,res)=>{
+  const id = req.params.id
+  
+  res.send(menssagem)
+  
+})
+
 
 export default app;

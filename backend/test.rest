@@ -1,9 +1,8 @@
 
-POST http://localhost:4000/login
+POST http://localhost:4000/criarconta
 Content-Type: application/json
 
-{   
-    "email" : "johnybombado@gmail.com",
-    "password": "1234",
-    "username": "Johny"
+{   "email" : "johnydercyck51@gmail.com" , 
+    "password" : "1234",
+    "username" : "johny"
 }
