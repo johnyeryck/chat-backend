@@ -1,22 +1,27 @@
 import express from "express";
-import pool from "./db.js";
 import { createaccount } from "./controlers/createaccount.js";
-import jwt from 'jsonwebtoken'
 import { login } from "./controlers/login.js";
 import cors from 'cors'
+import CookieParse from 'cookie-parser'
+import { ConfirmEmail } from "./controlers/confirmEmail.js";
 
 const app = express();
 app.use(express.json());
+app.use(CookieParse());
+// CORS CONFIG
 app.use(cors({
   origin : "http://localhost:3000",
   methods : ["GET","POST"],
+  credentials : true
 }))
 
-// Rota Principal
 
-app.get("/", async(req, res) => {
-  let users =  await pool.query("SELECT username ,id FROM usuarios")
-  res.status(200).send(users.rows.map((u)=> `<li>${u.id}</li>`).join(""));
+// Rota Principal
+app.get("/", (req, res) => {
+  const auth = req.cookies.secretToken
+  console.log(auth)
+  if(!auth) return res.sendStatus(401)
+  res.status(200)
 });
 
 // Rota de criação da conta
@@ -25,9 +30,10 @@ app.get("/criarconta", (req, res) => {
 });
 
 app.post("/criarconta", createaccount);
+//
+
 
 // Rota de Login
-
 app.post("/login", login);
 
 app.get("/login", (req, res) => {
@@ -35,29 +41,10 @@ app.get("/login", (req, res) => {
 });
 
 // CONFIRM EMAIL
-app.get("/confirmemail" , async (req ,res)=>{
-    let id = BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
-    const {token} = req.query;
-    const decode = jwt.decode(token , 'segredo')
-    const { password , email , username } = decode;
-    await pool.query("INSERT INTO usuarios (email , password , username , id) VALUES($1,$2,$3,$4)", [email ,password,username,id])
-
-
-})
+app.get("/confirmemail" , ConfirmEmail)
 
 // CHAT
-let menssagem = []
 
-app.post("/chat/:id" , (req ,res)=>{
-   const {mesage} = req.body
-   res.send(mesage)
-})
-app.get("/chat/:id" , (req,res)=>{
-  const id = req.params.id
-  
-  res.send(menssagem)
-  
-})
 
 
 export default app;
