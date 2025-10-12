@@ -2,16 +2,24 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import LoadingSpinner from "../components/loadspinner";
-
+import values from "../interfaces";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 export default function LoginPage() {
   const [loading, setloading] = useState<boolean>(false);
+  type logintype = z.infer<typeof schema>;
+  const schema = z.object({
+    email: z.email(),
+    password: z.string(),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<logintype>({ resolver: zodResolver(schema) });
 
-  const onsubmit = async (e: any) => {
+  const onsubmit = async (e: values) => {
     const data = { email: e.email, password: e.password };
     try {
       const res = await fetch("http://localhost:4000/login", {
@@ -30,48 +38,54 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 text-black">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center text-black">Login</h1>
+    <main className="flex items-center justify-center min-h-screen w-1/4 h-100 ml-auto mr-auto text-black">
+      <div className="w-full max-w-md p-8 space-y-6 h-100 rounded-lg  bg-[#0D0E1C] shadow shadow-[#00F5D4]">
+        <h1 className="text-2xl font-bold text-center text-white ">Login</h1>
         <form className="space-y-4" onSubmit={handleSubmit(onsubmit)}>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              {...register("email", { required: "Obrigatorio" })}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Senha
-            </label>
-            <input
-              type="password"
-              id="password"
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              {...register("password", { required: "Obrigatorio" })}
-            />
-          </div>
+          <input
+            type="email"
+            id="email"
+            required
+            placeholder="email"
+            className="mt-1 block w-full px-3 py-2 rounded-lg text-gray-500 bg-[#1e1f30] "
+            {...register("email", {
+              required: "Esse campo é obrigatorio",
+            })}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+          <input
+            placeholder="senha"
+            type="password"
+            id="password"
+            required
+            className="mt-1 block w-full px-3 text-gray-500 py-2 bg-[#1e1f30] rounded-lg"
+            {...register("password", {
+              required: "Senha é obrigatória",
+              minLength: {
+                value: 6,
+                message: "Senha deve ter no mínimo 6 caracteres",
+              },
+              maxLength: {
+                value: 10,
+                message: "Senha deve ter no máximo 10 caracteres",
+              },
+            })}
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
           <button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-1/2 py-2 px-4  bg-[#00F5D4] rounded-lg"
           >
             {loading ? <LoadingSpinner /> : "Entrar"}
           </button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
