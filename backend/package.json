@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.ts",
-    "start": " nodemon server.ts",
+    "start": "node server.ts",
+    "dev": " npx tsx watch server.ts",
     "test": "jest"
   },
   "author": "",
