@@ -6,11 +6,11 @@ import { emaildata } from "../emailTransporter.js";
 import { Getusername } from "../createUsername.js";
 
 // MIDDLEWARE OF ACCOUNT CREATION
-export const createaccount = async (req : any, res : any) => {
+export const createaccount = async (req: any, res: any) => {
   const { email, password } = req.body;
 
- const user = Getusername(email)
- console.log(user)
+  const user = Getusername(email);
+  console.log(user);
   const hash = await bcrypt.hash(password, 10);
   try {
     const consultation = await pool.query(
@@ -18,12 +18,12 @@ export const createaccount = async (req : any, res : any) => {
       [email],
     );
     if (consultation.rowCount === 0) {
-      const token = jwt.sign({ email, hash,user }, "segredo", {
+      const token = jwt.sign({ email, hash, user }, "segredo", {
         expiresIn: "5min",
       });
       const url = `http://localhost:3000/confirmEmail/${token}`;
 
-      transport.sendMail(emaildata(email,url), (error : any, info : any) => {
+      transport.sendMail(emaildata(email, url), (error: any, info: any) => {
         if (error) return res.status(500).send(error);
         return res.sendStatus(200);
       });
