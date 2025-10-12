@@ -1,10 +1,9 @@
-
-export const emaildata = (email : string , url : string) => {
-    return {
-        from: "johnyeryckdev@gmail.com",
-        to: email,
-        subject: "Confirme seu email",
-        html: `
+export const emaildata = (email: string, url: string) => {
+  return {
+    from: "johnyeryckdev@gmail.com",
+    to: email,
+    subject: "Confirme seu email",
+    html: `
         <!DOCTYPE html>
         <html lang="pt-BR">
         <head>
@@ -66,5 +65,5 @@ export const emaildata = (email : string , url : string) => {
         </body>
         </html>
         `,
-        }
+  };
 };
