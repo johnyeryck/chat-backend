@@ -6,7 +6,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const consultation = await pool.query(
     "SELECT * FROM usuarios WHERE email = $1",
-    [email],
+    [email]
   );
 
   if (consultation.rowCount === 0) {
@@ -14,9 +14,15 @@ export const login = async (req: Request, res: Response) => {
   }
   const hashed = consultation.rows[0].password;
   const comp = await bcrypt.compare(password, hashed);
-  console.log(comp);
   if (comp) {
-    res.sendStatus(200);
+    const token = jwt.sign({ email }, "secret", {
+      expiresIn: "50min",
+    });
+
+    res.status(200).json({
+      acesstoken: token,
+    });
+  } else {
+    res.sendStatus(401);
   }
-  res.sendStatus(400);
 };

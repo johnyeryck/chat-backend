@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "chatApp",
 });
 
-pool.query("SELECT NOW()", (err) => {
+pool.query("SELECT NOW()", (err: Error) => {
   if (err) {
     console.error("Database connection error:", err);
   } else {

@@ -1,5 +1,5 @@
 
-POST  http://localhost:4000/criarconta
+GET   http://localhost:4000/user/dnajkndjasndjasn
 Content-Type: application/json
 
 {   "email" : "johnybombado@gmail.com" , 

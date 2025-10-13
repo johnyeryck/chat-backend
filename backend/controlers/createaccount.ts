@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
-import { transport } from "../emailconfig.js";
+import { transport } from "../nodemailerConfig/emailconfig.js";
 import pool from "../db.js";
 import bcrypt from "bcryptjs";
-import { emaildata } from "../emailTransporter.js";
-import { Getusername } from "../createUsername.js";
+import { emaildata } from "../nodemailerConfig/emailTransporter.js";
+import { Getusername } from "../functions/createUsername.js";
+import type { Request, Response } from "express";
 
 // MIDDLEWARE OF ACCOUNT CREATION
-export const createaccount = async (req: any, res: any) => {
+export const createaccount = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = Getusername(email);
@@ -15,7 +16,7 @@ export const createaccount = async (req: any, res: any) => {
   try {
     const consultation = await pool.query(
       "SELECT email FROM usuarios WHERE email = $1",
-      [email],
+      [email]
     );
     if (consultation.rowCount === 0) {
       const token = jwt.sign({ email, hash, user }, "segredo", {

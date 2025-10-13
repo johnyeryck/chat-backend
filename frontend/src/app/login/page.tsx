@@ -20,6 +20,7 @@ export default function LoginPage() {
   } = useForm<logintype>({ resolver: zodResolver(schema) });
 
   const onsubmit = async (e: values) => {
+    setloading(true);
     const data = { email: e.email, password: e.password };
     try {
       const res = await fetch("http://localhost:4000/login", {
@@ -31,7 +32,13 @@ export default function LoginPage() {
       });
       if (res.status === 200) {
         setloading(false);
-        window.location.href = "http://localhost:3000";
+        // window.location.href = "http://localhost:3000";
+        const token = await res.json();
+        localStorage.setItem("tokenAcess", token.acesstoken);
+        console.log(token.acesstoken);
+      }
+      if (res.status === 401) {
+        setloading(false);
       }
     } catch (err) {
       console.log(err);
@@ -80,7 +87,7 @@ export default function LoginPage() {
           )}
           <button
             type="submit"
-            className="w-1/2 py-2 px-4  bg-[#00F5D4] rounded-lg"
+            className="w-1/2 py-2 px-4  bg-[#00F5D4] rounded-lg hover:bg-[#09a893] transition-colors cursor-pointer"
           >
             {loading ? <LoadingSpinner /> : "Entrar"}
           </button>

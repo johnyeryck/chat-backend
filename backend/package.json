@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.ts",
-    "dev": " npx tsx watch server.ts",
+    "dev": " npx tsx watch index.ts",
     "test": "jest"
   },
   "author": "",

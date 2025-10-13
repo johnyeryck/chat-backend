@@ -4,16 +4,19 @@ import Image from "next/image";
 import { useEffect } from "react";
 export default function Home() {
   useEffect(() => {
-    const consultatio = async () => {
-      const res = await fetch("http://localhost:4000", {
+    const token = localStorage.getItem("tokenAcess");
+    console.log(token);
+    const req = async () => {
+      const res = await fetch(`http://localhost:4000/user/${token}`, {
         method: "GET",
         credentials: "include",
       });
+      console.log(await res.json());
       if (!res.ok) {
         throw new Error("Falha na requisição");
       }
     };
-    consultatio();
+    req();
   });
 
   return (
