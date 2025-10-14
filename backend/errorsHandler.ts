@@ -1,7 +1,21 @@
-export default class errosHandle extends Error {
-  public readonly statuscode: number;
-  constructor(menssage: string, statuscode: number) {
-    super(menssage);
-    this.statuscode = statuscode;
+  export default class ErrorHandler extends Error {
+    public readonly statuscode: number;
+    constructor(menssage: string, statuscode: number) {
+      super(menssage);
+      this.statuscode = statuscode;
+    }
   }
-}
+
+  export class notFoundError extends ErrorHandler {
+    constructor(message : string){
+      super(message , 404)
+    }
+  }
+
+  export class NotAuthorized extends ErrorHandler {
+    constructor(message : string){
+      super(message , 401)
+    }
+  }
+
+  

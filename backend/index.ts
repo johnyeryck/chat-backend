@@ -25,9 +25,16 @@ app.use(
     res: Response,
     next: NextFunction
   ) => {
+<<<<<<< Updated upstream
     const statusCode = err.statuscode ?? 500;
     const message = err.message ?? "server internal error";
     return res.status(statusCode).send(message);
+=======
+      const statusCode = err.statusCode ?? 500
+	    const message = error.statusCode ? error.message : 'Internal Server Error'
+      	return res.status(statusCode).json({ message })
+
+>>>>>>> Stashed changes
   }
 );
 
