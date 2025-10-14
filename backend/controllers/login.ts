@@ -2,6 +2,7 @@ import pool from "../db.js";
 import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { NotAuthorized } from "../errorsHandler.js";
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const consultation = await pool.query(
@@ -9,9 +10,7 @@ export const login = async (req: Request, res: Response) => {
     [email]
   );
 
-  if (consultation.rowCount === 0) {
-    res.status(401).send("Email Inválido");
-  }
+  if (consultation.rowCount === 0) throw new NotAuthorized("Email não registrado") 
   const hashed = consultation.rows[0].password;
   const comp = await bcrypt.compare(password, hashed);
   if (comp) {
@@ -23,6 +22,6 @@ export const login = async (req: Request, res: Response) => {
       acesstoken: token,
     });
   } else {
-    res.sendStatus(401);
+    throw new NotAuthorized("Senha incorreta")
   }
 };

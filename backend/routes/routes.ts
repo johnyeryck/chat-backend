@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createaccount } from "../controlers/createaccount.js";
-import { login } from "../controlers/login.js";
-import { ConfirmEmail } from "../controlers/confirmEmail.js";
-import { Getdata } from "../controlers/getData.js";
+import { createaccount } from "../controllers/createaccount.js";
+import { login } from "../controllers/login.js";
+import { ConfirmEmail } from "../controllers/confirmEmail.js";
+import { Getdata } from "../controllers/getData.js";
 
 const router = Router();
 router.post("/criarconta", createaccount);
