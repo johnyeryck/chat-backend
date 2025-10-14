@@ -4,8 +4,9 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 const file = fileURLToPath(import.meta.url);
 const __dirname = dirname(file);
-dotenv.config({ path: join(__dirname, "../.env") });
+dotenv.config({ path: join(__dirname, "../../.env") });
 
+console.log(process.env.PASSWORD);
 export const transport = nodemailer.createTransport({
   service: "gmail",
   auth: {

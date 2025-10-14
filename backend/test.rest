@@ -1,8 +1,11 @@
 
-GET http://localhost:4000/confirmemail/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiam9hb3NpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaGFzaCI6IiQyYiQxMiRYWVo3OGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6QUJDREVGR0hJSktMTU5PUFFSUyIsImlhdCI6MTcyODgzNTIwMCwiZXhwIjoxNzI4OTIxNjAwfQ.ghi789jkl012mno345pqr
+POST http://localhost:4000/criarconta
 Content-Type: application/json
 
-{   "email" : "johnybombado@gmail.com" , 
-    "password" : "testesa",
-    "username" : "johny"
+{  
+     "email" : "johnybombado@gmail.com" , 
+     "password" : "testesa",
+     "username" : "johny"
 }
+
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiam9hb3NpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaGFzaCI6IiQyYiQxMiRYWVo3OGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6QUJDREVGR0hJSktMTU5PUFFSUyIsImlhdCI6MTcyODgzNTIwMCwiZXhwIjoxNzI4OTIxNjAwfQ.ghi789jkl012mno345pqr

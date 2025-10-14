@@ -8,8 +8,8 @@ import router from "./routes/routes.js";
 import type errosHandle from "./errorsHandler.js";
 
 const app = express();
-app.use(router);
 app.use(express.json());
+app.use(router);
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -25,7 +25,9 @@ app.use(
     res: Response,
     next: NextFunction
   ) => {
-    return res.send("caiu no erro mane");
+    const statusCode = err.statuscode ?? 500;
+    const message = err.message ?? "server internal error";
+    return res.status(statusCode).send(message);
   }
 );
 
