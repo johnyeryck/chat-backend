@@ -12,10 +12,16 @@ export const ConfirmEmail = async (req: Request, res: Response) => {
 
   if (!decode) throw new errosHandle("Token não autorizado", 401);
   const { hash, email, user } = decode;
-  const response = await pool.query(
-    "INSERT INTO usuarios (email , password , id,username) VALUES($1,$2,$3,$4)",
-    [email, hash, user]
-  );
-  console.log(response);
-  return res.sendStatus(201);
+
+  try {
+    const response = await pool.query(
+      "INSERT INTO usuarios (email , password ,username) VALUES($1,$2,$3)",
+      [email, hash, user]
+    );
+    console.log(response);
+    res.sendStatus(201);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 };
