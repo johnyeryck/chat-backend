@@ -10,18 +10,17 @@ export const login = async (req: Request, res: Response) => {
     [email]
   );
 
-  if (consultation.rowCount === 0) throw new NotAuthorized("Email não registrado") 
+  if (consultation.rowCount === 0)
+    throw new NotAuthorized("Email não registrado");
   const hashed = consultation.rows[0].password;
   const comp = await bcrypt.compare(password, hashed);
-  if (comp) {
-    const token = jwt.sign({ email }, "secret", {
-      expiresIn: "50min",
-    });
 
-    res.status(200).json({
-      acesstoken: token,
-    });
-  } else {
-    throw new NotAuthorized("Senha incorreta")
-  }
+  if (!comp) throw new NotAuthorized("Senha incorreta");
+
+  const token = jwt.sign({ email }, "secret", {
+    expiresIn: "50min",
+  });
+  res.status(200).json({
+    acesstoken: token,
+  });
 };
