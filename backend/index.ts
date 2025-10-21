@@ -9,7 +9,6 @@ import type errosHandle from "./errorsHandler.js";
 
 const app = express();
 app.use(express.json());
-app.use(router);
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -17,6 +16,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(router);
 
 app.use(
   (
