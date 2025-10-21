@@ -8,6 +8,6 @@ const router = Router();
 router.post("/criarconta", createaccount);
 router.post("/login", login);
 router.get("/confirmemail", ConfirmEmail);
-router.get("/user/:token", Getdata);
+router.get("/user", Getdata);
 
 export default router;
