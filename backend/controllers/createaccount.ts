@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { emaildata } from "../nodemailerConfig/emailTransporter.js";
 import { Getusername } from "../functions/createUsername.js";
 import type { Request, Response } from "express";
-import ErrorHandler from "../errorsHandler.js";
+import ErrorHandler, { BadRequest } from "../errorsHandler.js";
 
 // MIDDLEWARE OF ACCOUNT CREATION
 export const createaccount = async (req: Request, res: Response) => {
@@ -17,7 +17,8 @@ export const createaccount = async (req: Request, res: Response) => {
     [email]
   );
 
-  if (consultation.rowsCount > 0) throw new ErrorHandler("Email já foi cadastrado", 400)
+  if (consultation.rowsCount > 0)
+    throw new BadRequest("Email já foi cadastrado");
 
   const hash = await bcrypt.hash(password, 10);
   const token = jwt.sign({ email, hash, user }, "segredo", {
@@ -26,7 +27,6 @@ export const createaccount = async (req: Request, res: Response) => {
   const url = `http://localhost:3000/confirmEmail/${token}`;
 
   await transport.sendMail(emaildata(email, url), (error: any, info: any) => {
-    console.log(error);
     if (error) return res.status(500).send(error);
     return res.sendStatus(200);
   });
