@@ -16,11 +16,14 @@ export const login = async (req: Request, res: Response) => {
   const comp = await bcrypt.compare(password, hashed);
 
   if (!comp) throw new NotAuthorized("Senha incorreta");
-
-  const token = jwt.sign({ email }, "secret", {
-    expiresIn: "50min",
+  const username = consultation.rows[0].username;
+  const token = jwt.sign({ username }, "secret", {
+    expiresIn: "15",
   });
-  res.status(200).json({
-    acesstoken: token,
+  res.cookie("LoginAuth", "", {
+    httpOnly: true,
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+  res.status(200).json(token);
 };

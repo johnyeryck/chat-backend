@@ -1,13 +1,21 @@
-export default function Chat() {
+import Image from "next/image";
+
+interface Chat {
+  InputHidden?: boolean;
+}
+
+export default function Chat({ InputHidden }: Chat) {
   return (
-    <div className="">
-      <div className="border w-1/3 h-140 mt-20 text-white ml-auto mr-auto ">
+    <div className=" shadow shadow-gray-800 w-1/3  mt-20 h-120 rounded-lg bg-[#0D0E1C]">
+      <div className=" flex justify-evenly " hidden={InputHidden}>
         <input
           type="text"
-          className=" border border-white pl-2"
-          placeholder="Envie uma mensagem"
+          className="border border-[#1FFFE1]  rounded-2xl pl-3 w-2/3 "
+          placeholder="Envie Uma Mensagem"
         />
-        <button className="border border-[#0cf187]">Enviar</button>
+        <button type="submit" className="cursor-pointer">
+          <Image src="/mandar.png" alt="enviar" width={20} height={20} />
+        </button>
       </div>
     </div>
   );

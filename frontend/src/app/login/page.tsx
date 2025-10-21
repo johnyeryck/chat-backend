@@ -30,12 +30,12 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
       });
+      console.log(res.status);
       if (res.status === 200) {
         setloading(false);
-        // window.location.href = "http://localhost:3000";
         const token = await res.json();
-        localStorage.setItem("tokenAcess", token.acesstoken);
-        console.log(token.acesstoken);
+        localStorage.setItem("token", token);
+        window.location.href = "http://localhost:3000";
       }
       if (res.status === 401) {
         setloading(false);
