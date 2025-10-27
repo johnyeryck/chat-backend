@@ -8,10 +8,12 @@ export const Getdata = async (req: Request, res: Response) => {
   const decode = jwt.decode(token, "secret");
   const { username } = decode;
   const consult = await pool.query("SELECT username FROM usuarios");
-  console.log(consult.rows);
-  const users = consult.rows[0].username;
-  res.status(200).json({
-    users: users,
+  const users: { username: string } = consult.rows;
+
+  const data = {
     userLoged: username,
-  });
+    users: users,
+  };
+
+  res.status(200).json(data);
 };
