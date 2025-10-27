@@ -1,6 +1,7 @@
 import { createContext } from "react";
-interface Context {
-  users?: string[];
-  userloged?: string;
+export interface DataInterface {
+  users: { username: string }[];
+  userLoged: string;
 }
-export const MyContext = createContext<Context | undefined>(undefined);
+
+export const MyContext = createContext<DataInterface[] | undefined>(undefined);
