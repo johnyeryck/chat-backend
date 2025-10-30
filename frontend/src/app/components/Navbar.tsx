@@ -37,7 +37,7 @@ export default function Navbar() {
         <article className="w-1/3 m-auto">
           <input
             type="search"
-            name=""
+            name="filter"
             className="w-full h-9 rounded-2xl pl-3 bg-[#1e1f30] ml-auto focus:border-[#00F5D4]"
             list="suggestions"
             onChange={filterResults}
